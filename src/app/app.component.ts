@@ -13,36 +13,35 @@ export class AppComponent {
   documentoIdentidad: string = "";
   estadoCivil: string = "";
   direccion: string = "";
-  lugar: string = "";
   fecha: string = "";
-  firma: string = "";
   constructor(private route: ActivatedRoute) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+
+  //  const fechaMod = await this.fechaModificada('2023-12-12');
     console.log("YA ESTAMOS ADENTRO");
     this.nombre = this.route.snapshot.paramMap.get('nombre')!;
     this.documentoIdentidad = this.route.snapshot.paramMap.get('documentoIdentidad')!;
     this.estadoCivil = this.route.snapshot.paramMap.get('estadoCivil')!;
     this.direccion = this.route.snapshot.paramMap.get('direccion')!;
-    this.lugar = this.route.snapshot.paramMap.get('lugar')!;
-    this.fecha = fechaModificada(this.route.snapshot.paramMap.get('fecha'))!;
-    this.firma = this.route.snapshot.paramMap.get('firma')!;
+   // const fechaMod = await this.fechaModificada(String(this.route.snapshot.paramMap.get('fecha')));
+    const fechaMod = await this.fechaModificada('2023-12-12');
+    this.fecha = String(fechaMod);
   }
 
-fechaModificada(fecha: String){
-const fechaStr = fecha;
+  async fechaModificada(fechain: string) {
 
-// Convertir la fecha en un objeto Date
-const fecha = new Date(fechaStr);
-
-// Obtener el nombre del mes en función del número del mes
-const meses = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
-const nombreMes = meses[fecha.getMonth()];
-
-// Formatear la fecha como "12 de DICIEMBRE de 2023"
-const fechaFormateada = `${fecha.getDate()} de ${nombreMes} de ${fecha.getFullYear()}`;
-
-return fechaFormateada;
-
-}
+  
+    // Convertir la fecha en un objeto Date
+    const fechaStr = new Date(fechain);
+  
+    // Obtener el nombre del mes en función del número del mes
+    const meses = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
+    const nombreMes = meses[fechaStr.getMonth()];
+  
+    // Formatear la fecha como "12 de DICIEMBRE de 2023"
+    const fechaFormateada = `${fechaStr.getDate()} de ${nombreMes} de ${fechaStr.getFullYear()}`;
+  console.log('fchaaaaaaa:', fechaFormateada);
+    return fechaFormateada;
+  }
 }
