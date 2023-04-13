@@ -1,0 +1,83 @@
+
+#server{
+#    listen 8080;
+#    location /services-backend/{
+#        proxy_pass http://services-backend:3000/;
+#    }
+#location /services-backend-files/{
+#        proxy_pass http://services-backend-files:3000/;
+#    }
+
+#    location /{
+#        proxy_pass http://web-frontend:80/;
+#        }
+#}
+
+server {
+
+        listen 443 ssl;
+        server_tokens off; 
+
+        ssl_protocols TLSv1.2 TLSv1.3;
+        ssl_early_data on;
+
+        ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256';
+        ssl_prefer_server_ciphers on;
+        ssl_session_cache shared:SSL:50m;
+
+       #  add_header Referrer-Policy "no-referrer" always;
+       #  add_header X-Content-Type-Options "nosniff" always;
+       #  add_header X-Download-Options "noopen" always;
+       #  add_header X-Frame-Options "SAMEORIGIN" always;
+       #  add_header X-Permitted-Cross-Domain-Policies "none" always;
+       #  add_header X-Robots-Tag "none" always;
+       #  add_header X-XSS-Protection "1; mode=block" always;
+       #  add_header Cache-Control "no-cache,  no-store, must-revalidate";
+       #  add_header Pragma "no-cache"; 
+       #  add_header Content-Security-Policy  "frame-ancestors 'self';  child-src 'self'  https://authentication-idepro.firebaseapp.com  https://www.gstatic.com/recaptcha/ https://www.gstatic.com/recaptcha/   www.google.com;script-src 'self'  https://idepronet.idepro.org:8765 www.google.com  https://apis.google.com  https://cdn.jsdelivr.net https://www.gstatic.com;";
+        
+
+        client_body_buffer_size      10m;
+        client_max_body_size         10m;
+        client_header_buffer_size    1k;
+        large_client_header_buffers  4 4k;
+        output_buffers               1 32k;
+        postpone_output              1460;
+
+       # add_header Content-Security-Policy  " script-src 'self'  https://idepronet.idepro.org:8765 www.google.com  https://apis.google.com  https://cdn.jsdelivr.net  https://www.gstatic.com;";
+       # add_header Content-Security-Policy  "default-src  https: 'unsafe-inline' 'unsafe-eval';  script-src https: 'unsafe-inline' 'unsafe-eval'; img-src https: 'self' data: https:;font-src 'self' data: fonts.gstatic.com data: themes.googleusercontent.com";
+
+        fastcgi_hide_header X-Powered-By;
+
+        ssl_certificate /etc/nginx/certs/idepro.org.crt;
+        ssl_certificate_key /etc/nginx/certs/privateKey.key;
+
+        error_page  404 https://geekflare.com/errorpage;
+        error_page  403 https://geekflare.com/errorpage;
+        error_page  500 https://geekflare.com/errorpage;
+        error_page  503 https://geekflare.com/errorpage;
+        error_page  504 https://geekflare.com/errorpage; 
+        
+        server_name svr-dmz01.idepro.org;
+       # access_log /var/log/nginx/nginx.vhost.access.log;
+       # error_log /var/log/nginx/nginx.vhost.error.log;
+
+        
+        location /services-backend/ {
+        proxy_pass http://services-backend:3000/;
+	}
+
+        location /services-backend-files/{
+        proxy_pass http://services-backend-files:3000/;
+	}
+
+	 location /{
+        proxy_pass https://web-frontend:443/;
+        }
+
+services-backend-files
+}
+
+
+
+

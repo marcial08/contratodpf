@@ -1,0 +1,47 @@
+
+server{
+    listen 8080;
+    location /services-backend/{
+        proxy_pass http://services-backend:3000/;
+    }
+location /services-backend-files/{
+        proxy_pass http://services-backend-files:3000/;
+    }
+
+    location /{
+        proxy_pass http://web-frontend:80/;
+        }
+}
+
+server {
+
+        listen 443 ssl;
+        # ssl on;
+        ssl_certificate /etc/nginx/certs/idepro.org.crt;
+        #ssl_certificate /root/proyectos/certificados/cacert.crt;
+        ssl_certificate_key /etc/nginx/certs/privateKey.key;
+
+	#SEGURIDAD
+	ssl_protocols	TLVv
+        server_name svr-dmz01.idepro.org;
+       # access_log /var/log/nginx/nginx.vhost.access.log;
+       # error_log /var/log/nginx/nginx.vhost.error.log;
+
+        location /services-backend/ {
+
+        proxy_pass http://services-backend:3000/;
+
+         }
+         location /services-backend-files/{
+        proxy_pass http://services-backend-files:3000/;
+    }
+
+	 location /{
+        proxy_pass https://web-frontend:443/;
+        }
+
+}
+
+
+
+
