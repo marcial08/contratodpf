@@ -23,15 +23,20 @@ export class ContratoComponent implements OnInit {
     this.estadoCivil = this.route.snapshot.paramMap.get('estadoCivil')!;
     this.direccion = this.route.snapshot.paramMap.get('direccion')!;
     this.fecha = this.route.snapshot.paramMap.get('fecha')!;
+
     const fechaMod = await this.fechaModificada(this.fecha);
     this.fecha = String(fechaMod);
   }
 
   async fechaModificada(fechain: string) {
-
+    // Dividir la cadena de fecha en día, mes y año
+    const partesFecha = fechain.split('-');
+    const dia = parseInt(partesFecha[2]);
+    const mes = parseInt(partesFecha[1]) - 1; // Restar 1 al mes, ya que en JavaScript los meses comienzan desde 0
+    const año = parseInt(partesFecha[0]);
   
-    // Convertir la fecha en un objeto Date
-    const fechaStr = new Date(fechain);
+    // Crear el objeto Date con los valores correctos
+    const fechaStr = new Date(año, mes, dia);
   
     // Obtener el nombre del mes en función del número del mes
     const meses = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
@@ -41,4 +46,5 @@ export class ContratoComponent implements OnInit {
     const fechaFormateada = `${fechaStr.getDate()} de ${nombreMes} de ${fechaStr.getFullYear()}`;
     return fechaFormateada;
   }
+  
 }
