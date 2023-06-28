@@ -24,5 +24,6 @@ RUN npm run build -- --prod
 # Etapa de producción
 FROM nginx:1.21.0-alpine as production-stage
 COPY --from=build-stage /app/dist/app-frontend-contrato-page /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
